@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import transportationSlice from "../features/transportation/transportationSlice";
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
+    transportation: transportationSlice
   },
 });
