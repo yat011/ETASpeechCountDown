@@ -3,6 +3,7 @@
 class BusProvider{
 
     constructor(){
+        console.log("create new")
     }
 
     getETAData = async ({routes, stop})=>{
@@ -16,11 +17,15 @@ class BusProvider{
             })
         
         const result = await res.json()
-        // console.log(result);
-        const finalResult =result.map(function(item){
+
+        let finalResult = result.filter(function(item){
+            return !isNaN(Date.parse(item.eta));
+        })
+        finalResult = finalResult.map(function(item){
+            const tempDate = new Date(item.eta).toISOString()
             const output = {
                 name: item['route'],
-                eta: new Date(item.eta).toLocaleString()
+                eta: tempDate
             }
             return output
         })

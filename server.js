@@ -72,6 +72,7 @@ app.post('/busETA', async function (req, res) {
 
   for (const routeId of routes){
     var apiUrl = baseURL+"/v1/transport/citybus-nwfb/eta/nwfb/"+stop_id+"/"+routeId;
+    console.log(apiUrl);
     body = await request({uri:apiUrl, json:true});
     data = body['data'];
 
