@@ -11,10 +11,7 @@ const util = require('util');
 // Creates a client
 const client = new textToSpeech.TextToSpeechClient();
 
-async function generateSpeech(filepath) {
-  // The text to synthesize
-  const text = 'hi';
-
+async function generateSpeech(text, filepath) {
   // Construct the request
   const request = {
     input: {text: text},
@@ -45,12 +42,14 @@ app.get('/ping', function (req, res) {
 
 app.post('/speech', async function (req, res) {
   console.log(req.body);
+
+  const text = req.body['text']
   tmp.file(postfix='.mp3', async function _tempFileCreated(err, path, fd, cleanupCallback) {
     if (err) throw err;
 
     console.log('File: ', path);
     console.log('Filedescriptor: ', fd);
-    await generateSpeech(path);
+    await generateSpeech(text, path);
 
     await res.sendFile(path);
     // If we don't need the file anymore we could manually call the cleanupCallback
