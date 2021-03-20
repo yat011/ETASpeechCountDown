@@ -1,19 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
-import {ETADateInformation} from "./provider/Provider";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ENGINE_METHOD_ALL } from 'constants';
+import { RootState } from '../../app/store';
+import {convertToDateETA, ETADateInformation, ETAStringInformation} from "./provider/Provider";
 
 
 export interface TransportationState{
-  etaList: ETADateInformation[]
+   etaList: ETAStringInformation[]
 }
 
+const initialState:TransportationState = {
+   etaList: []
+}
 
 export const transportationSlice = createSlice({
   name: 'transportation',
-  initialState: {
-    etaList: []
-  },
+  initialState,
   reducers: {
-    updateETAList: (state, action) => {
+    updateETAList: (state, action:PayloadAction<ETAStringInformation[]>) => {
       state.etaList = action.payload;
     },
 
@@ -21,4 +24,8 @@ export const transportationSlice = createSlice({
 });
 
 export const { updateETAList} = transportationSlice.actions;
+export const selectETAList = (state: RootState) =>{
+  const etaList = state.transportation.etaList ;
+  return convertToDateETA(etaList);
+}
 export default transportationSlice.reducer;

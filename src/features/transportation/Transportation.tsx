@@ -2,8 +2,8 @@ import { result, sortBy } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BusProvider from './provider/BusProvider';
-import { updateETAList, TransportationState } from './transportationSlice';
-import {ETADateInformation, Provider} from "./provider/Provider"
+import { updateETAList,  selectETAList } from './transportationSlice';
+import {convertToStringETA, ETADateInformation,  Provider} from "./provider/Provider"
 
 
 type ProviderInputPair ={
@@ -16,7 +16,7 @@ function Transportation({ providerNames }: {providerNames:string}): JSX.Element 
     const default_inputs = [{ routes: ["81", "82", "106"], stop: "001267" }]; 
     const [providers, setProviders] = useState([new BusProvider()]);
     const dispatch = useDispatch()
-    const etaList = useSelector((state: TransportationState | any) => state.transportation.etaList)
+    const etaList = useSelector(selectETAList);
 
 
     const pairs = createProviderInputPairs(providers, default_inputs);
@@ -36,8 +36,7 @@ function Transportation({ providerNames }: {providerNames:string}): JSX.Element 
                 } 
                 return previous.slice(0).concat(current)
             });
-            console.log(flatDataList);
-            dispatch(updateETAList(flatDataList));
+            dispatch(updateETAList(convertToStringETA(flatDataList)));
         }
         fetch();
 
