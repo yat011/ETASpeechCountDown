@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
         <CountDown/>
-        <Transportation providers={"hi"}></Transportation>
+        <Transportation providerNames={"hi"}></Transportation>
     </div>
   );
 }

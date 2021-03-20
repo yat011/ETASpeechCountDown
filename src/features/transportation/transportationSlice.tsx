@@ -1,4 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {ETADateInformation} from "./provider/Provider";
+
+
+export interface TransportationState{
+  etaList: ETADateInformation[]
+}
+
 
 export const transportationSlice = createSlice({
   name: 'transportation',
