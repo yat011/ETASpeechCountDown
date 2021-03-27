@@ -14,7 +14,7 @@ function Transportation({ providerNames }: {providerNames:string}): JSX.Element 
 
     const default_inputs = [{ routes: ["81", "82", "106"], stop: "001267" }]; 
     const [providers, setProviders] = useState([new BusProvider()]);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const etaList = useSelector(selectETAList);
 
 

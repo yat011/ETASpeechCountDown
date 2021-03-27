@@ -36,16 +36,25 @@ audioPlayer.addEventListener("ended", ()=>{
 });
 
 function useLocalStorageState(itemName: string, defaultValue: any): [any, Dispatch<SetStateAction<any>>] {
-	let temp = localStorage.getItem(itemName);
-	if (temp !== null) {
-		temp = JSON.parse(temp)
-	}
-	const [value, setState] = useState(temp || []);
+	let temp = getLocalStorage(itemName);
+	const [value, setState] = useState(temp || defaultValue);
 
 	useEffect(() => {
-		localStorage.setItem(itemName, JSON.stringify(value));
+		setLocalStorage(itemName, value);
 	}, [value]);
 	return [value, setState];
+}
+
+function getLocalStorage(itemName:string): any{
+	let temp = localStorage.getItem(itemName);
+	if (temp !== null) {
+		temp = JSON.parse(temp);
+	}	
+	return temp;
+}
+
+function setLocalStorage(itemName:string, value: any): void{
+	localStorage.setItem(itemName, JSON.stringify(value));	
 }
 
 async function speak(text: string) {
@@ -126,6 +135,6 @@ function popAudioAndPlay(){
 }
 
 
-export { useLocalStorageState, speak, startPlayAudio };
+export { useLocalStorageState, getLocalStorage, setLocalStorage, speak, startPlayAudio };
 
 

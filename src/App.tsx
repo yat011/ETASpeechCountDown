@@ -6,6 +6,7 @@ import Transportation from './features/transportation/Transportation';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import DeadlineView from './features/deadline/Deadline';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 0,
@@ -39,7 +40,8 @@ function App() {
 
         <Grid item xs={12} sm={6}>
           <Paper className={styles.paper} >
-            <CountDown />
+            {/* <CountDown /> */}
+            <DeadlineView/>
           </Paper>
         </Grid>
       </Grid>
