@@ -5,6 +5,8 @@ import { useLocalStorageState, speak, startPlayAudio } from "../../util";
 import TimePicker, { TimePickerValue } from 'react-time-picker';
 import { ETADateInformation } from '../transportation/provider/Provider';
 import { selectETAList } from '../transportation/transportationSlice';
+import styled from 'styled-components';
+import { Column, ComponentBox } from '../style';
 
 const REMAINING_TEXT = "仲翻REMAINING分鐘";
 const LAST_ETA = "依家最遲搭島係NAME";
@@ -17,7 +19,6 @@ interface Deadline {
 type DeadlineAddFunction = (item: Deadline) => void;
 type DeadlineRemoveFunction = (item: Deadline) => void;
 type DeadlineChangeFunction = (item: Deadline) => void;
-
 
 function CountDown() {
 
@@ -38,18 +39,15 @@ function CountDown() {
 	}
 
 	return (
-		<div>
-			<div>
+			<ComponentBox>
+			{/* <div>
 				<DeadlineCountDown currentDeadline={currentDeadline} />
-			</div>
-			<div>
-				<h2>Deadline List</h2>
-				<DeadlineList deadlines={deadlines} onRemove={hadleDeadlineRemove} onUse={handleDeadlineChosen} />
-			</div>
-			<h2>Add Deadline</h2>
-			<DeadlineAddForm onAdd={handleDeadlineAdd} />
-			<hr />
-		</div>
+			</div> */}
+				<h1>Deadline List</h1>
+				<DeadlineList deadlines={deadlines} onRemove={hadleDeadlineRemove} onUse={handleDeadlineChosen} /> 
+				<h1>Add Deadline</h1>
+				<DeadlineAddForm onAdd={handleDeadlineAdd} />
+			</ComponentBox>
 	);
 
 }
@@ -76,7 +74,7 @@ const DeadlineCountDown = ({ currentDeadline }: { currentDeadline: Deadline | un
 	const lastValidETA = formattedETAList.length > 0 ? formattedETAList[formattedETAList.length - 1] : null;
 
 	let remainingMinutes: number | null = null;
-	if (lastValidETA !== null){
+	if (lastValidETA !== null) {
 		remainingMinutes = substractMinutes(lastValidETA.eta, currentDate);
 	}
 

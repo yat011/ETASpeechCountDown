@@ -1,11 +1,10 @@
 import { result, sortBy } from 'lodash';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BusProvider from './provider/BusProvider';
 import { updateETAList,  selectETAList } from './transportationSlice';
 import {convertToStringETA, ETADateInformation,  Provider} from "./provider/Provider"
-
-
+import {ComponentBox} from "../style";
 type ProviderInputPair ={
     inputArgs: any,
     provider: Provider
@@ -48,7 +47,8 @@ function Transportation({ providerNames }: {providerNames:string}): JSX.Element 
 
     const finalETAList:ETADateInformation[] = sortBy(etaList, "eta")
     return (
-        <div>
+        <ComponentBox>
+            <h1>ETA List</h1>
             {
                 finalETAList.map((row, i): JSX.Element => {
                     return (
@@ -58,7 +58,7 @@ function Transportation({ providerNames }: {providerNames:string}): JSX.Element 
                     )
                 })
             }
-        </div>
+        </ComponentBox>
 
     );
 
