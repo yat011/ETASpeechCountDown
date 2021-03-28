@@ -1,7 +1,5 @@
 import React from 'react';
 import CountDown from './features/countDown/CountDown';
-import CountDownDisplay from './features/countDown/CountDownDisplay';
-// import { MainColumn, Column, Container, Row } from './features/style';
 import Transportation from './features/transportation/Transportation';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,7 +25,7 @@ function App() {
           <Grid container justify='center' direction='column' >
             <Grid item xs={12}>
               <Paper className={styles.paper}>
-                <CountDownDisplay />
+                <CountDown />
               </Paper>
             </Grid>
             <Grid item xs={12}>
@@ -40,8 +38,7 @@ function App() {
 
         <Grid item xs={12} sm={6}>
           <Paper className={styles.paper} >
-            {/* <CountDown /> */}
-            <DeadlineView/>
+            <DeadlineView />
           </Paper>
         </Grid>
       </Grid>

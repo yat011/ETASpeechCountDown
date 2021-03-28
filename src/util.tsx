@@ -19,15 +19,11 @@ class ArrayWithPushEvent<T> extends Array<T>{
 
 const audioList: ArrayWithPushEvent<string> = new ArrayWithPushEvent<string>();
 
-
-
-
-
 const audioPlayer = new Audio();
 
 audioList.addPushListener(()=>{
-	console.log("end?", audioPlayer.ended)
-	if (audioPlayer.ended || audioPlayer.error !== null){
+	console.log("end?", audioPlayer.ended, audioPlayer.src)
+	if (audioPlayer.src == "" || audioPlayer.ended || audioPlayer.error !== null){
 		popAudioAndPlay();
 	}
 })
@@ -130,6 +126,7 @@ function popAudioAndPlay(){
 			return;
 		}
 		audioPlayer.src = nextUrl;
+		console.log("Play NOW!")
 		audioPlayer.play();
 	}
 }
