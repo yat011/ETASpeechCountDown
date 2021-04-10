@@ -6,10 +6,17 @@ import { selectETAList } from '../transportation/transportationSlice';
 import { selectCurrentDeadline } from '../deadline/deadlineSlice';
 import { Deadline } from '../deadline/Deadline';
 import { speak } from '../../util';
+import { makeStyles, Paper, Typography } from '@material-ui/core';
 
 
 const REMAINING_TEXT = "仲翻REMAINING分鐘";
 const LAST_ETA = "依家最遲搭島係NAME";
+
+const useStyles = makeStyles({
+	countDown: {
+		'font-size': '20rem',
+	}
+});
 
 function CountDown() {
 
@@ -30,19 +37,36 @@ function CountDown() {
 	}, [lastValidETA]);
 
 
-	if (!currentDeadline) {
-		return (<div>No existing deadline</div>);
-	}
 	return (
-		<div>
-			<div>Current Deadline: {currentDeadline.deadline}</div>
-			<div>Last Valid: {lastValidETA != null && getDateTime(lastValidETA.eta)}</div>
-			<div>Remaining: {remainingMinutes} min</div>
-		</div>
+		<Paper>
+			<CountDownView remainingMinutes={remainingMinutes} />
+		</Paper>
 	);
 
 
 }
+
+const CountDownView = ({ remainingMinutes }: { remainingMinutes: number | null }) => {
+	const styles = useStyles();
+	if (remainingMinutes === null) {
+		return (
+			<div className={styles.countDown}>
+				{/* <Typography  variant="h1" > */}
+					00
+				{/* </Typography> */}
+			</div>
+		)
+	}
+
+	return (
+		<div className={styles.countDown}>
+			{/* <Typography> */}
+			{remainingMinutes}
+			{/* </Typography> */}
+		</div>
+	)
+}
+
 
 function getSortedETABeforeDeadline(etaList: ETADateInformation[], deadline: Deadline | null) {
 	if (!deadline) {
@@ -59,8 +83,8 @@ function getLastETA(etaBeforeDeadline: ETADateInformation[]) {
 	return etaBeforeDeadline.length > 0 ? etaBeforeDeadline[etaBeforeDeadline.length - 1] : null;
 }
 
-function getRemainingMiutes(lastValidETA:ETADateInformation|null, currentDate: Date){
-	if(lastValidETA === null){
+function getRemainingMiutes(lastValidETA: ETADateInformation | null, currentDate: Date) {
+	if (lastValidETA === null) {
 		return null;
 	}
 	return substractMinutes(lastValidETA.eta, currentDate);
@@ -76,10 +100,6 @@ function updateDate(setCurrentDate: React.Dispatch<React.SetStateAction<Date>>) 
 	}
 
 }
-
-function getDateTime(date: Date) {
-	return date.getHours() + ":" + date.getMinutes();
-};
 
 function getDateObjectFromDatetime(datetimeStr: string) {
 	const currentDate = new Date();

@@ -1,3 +1,4 @@
+import NoSleep from 'nosleep.js';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 
@@ -20,6 +21,8 @@ class ArrayWithPushEvent<T> extends Array<T>{
 const audioList: ArrayWithPushEvent<string> = new ArrayWithPushEvent<string>();
 
 const audioPlayer = new Audio();
+
+const noSleep = new NoSleep();
 
 audioList.addPushListener(()=>{
 	console.log("end?", audioPlayer.ended, audioPlayer.src)
@@ -108,6 +111,7 @@ async function startPlayAudio() {
 	//getting the permission
 	// return
 	try{
+		noSleep.enable();
 		audioPlayer.src = "";
 		await audioPlayer.play();
 	}catch(err)	{

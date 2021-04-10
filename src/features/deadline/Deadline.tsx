@@ -1,42 +1,74 @@
+import { Fab, Grid, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, makeStyles, Paper, Typography } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import TimePicker, { TimePickerValue } from 'react-time-picker';
-import { selectDeadlineList, selectCurrentDeadline, updateDeadlineList, updateCurrentDeadline } from './deadlineSlice';
-
+import { startPlayAudio } from '../../util';
+import { selectCurrentDeadline, selectDeadlineList, updateCurrentDeadline, updateDeadlineList } from './deadlineSlice';
+import AddIcon from '@material-ui/icons/Add';
+import DeadlineAddForm from './DeadlineAddForm';
 export interface Deadline {
-	name: string;
-	deadline: string;
+    name: string;
+    deadline: string;
 }
 
-type DeadlineAddFunction = (item: Deadline) => void;
+
 type DeadlineRemoveFunction = (item: Deadline) => void;
 type DeadlineChangeFunction = (item: Deadline) => void;
 
-const DeadlineView = ()=>{
+const useStyles = makeStyles((theme) => (
+    {
+        addDiv: {
+            padding: theme.spacing(0.5),
+            textAlign: 'right'
+        }
+    }
+));
+
+const DeadlineView = () => {
+    const styles = useStyles()
     const deadlines = useSelector(selectDeadlineList);
-    const currentDeadline = useSelector(selectCurrentDeadline);
+    const [isFormOpen, setFormOpen] = useState(false);
+
     const dispatch = useDispatch();
-	const handleDeadlineAdd = (newItem: Deadline) => {
+    const handleDeadlineAdd = (newItem: Deadline) => {
         dispatch(updateDeadlineList(deadlines.concat(newItem)));
-	}
+    }
 
-	const hadleDeadlineRemove = (item: Deadline) => {
-		dispatch(updateDeadlineList(deadlines.filter((t: Deadline) => (t !== item))));
-	}
+    const hadleDeadlineRemove = (item: Deadline) => {
+        dispatch(updateDeadlineList(deadlines.filter((t: Deadline) => (t !== item))));
+    }
 
-	const handleDeadlineChosen = (item: Deadline) => {
-		// startPlayAudio();
-		// setCurrentDeadline(item);
+    const handleDeadlineChosen = (item: Deadline) => {
+        startPlayAudio();
         dispatch(updateCurrentDeadline(item));
-	}
+    }
+
+    const handleDeadlineAddFormClose = () => {
+        setFormOpen(false);
+    }
 
     return (
-        <div>
-        <h1>Deadline List</h1>
-        <DeadlineList deadlines={deadlines} onRemove={hadleDeadlineRemove} onUse={handleDeadlineChosen} /> 
-        <h1>Add Deadline</h1>
-        <DeadlineAddForm onAdd={handleDeadlineAdd} />
-        </div>
+        <Paper>
+            <Grid container>
+                <Grid item xs={12}>
+                    <Typography variant="h2" gutterBottom>
+                        Deadline
+                   </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <DeadlineList deadlines={deadlines} onRemove={hadleDeadlineRemove} onUse={handleDeadlineChosen} />
+                </Grid>
+                <Grid item xs={12} className={styles.addDiv}>
+                    <IconButton color="primary" aria-label="add" onClick={() => { setFormOpen(true) }}>
+                        <AddIcon />
+                    </IconButton>
+                </Grid>
+                <Grid item xs={12}>
+                    <DeadlineAddForm open={isFormOpen} onClose={handleDeadlineAddFormClose} onAdd={handleDeadlineAdd} />
+                </Grid>
+            </Grid>
+        </Paper>
 
     )
 
@@ -44,52 +76,28 @@ const DeadlineView = ()=>{
 
 
 const DeadlineList = ({ deadlines, onRemove, onUse }: { deadlines: Deadline[], onRemove: DeadlineRemoveFunction, onUse: DeadlineChangeFunction }) => {
+    return (
+        <List>
+            {
+                deadlines.map((item, index) => {
+                    return (
+                        <ListItem key={index}>
+                            <ListItemText primary={item.deadline} secondary={item.name} />
+                            <ListItemSecondaryAction>
+                                <IconButton edge="end" aria-label="use" onClick={() => onUse(item)}>
+                                    <PlayArrowIcon />
+                                </IconButton>
+                                <IconButton edge="end" aria-label="delete" onClick={() => onRemove(item)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    )
+                })
+            }
+        </List>
 
-	return (
-		<ul>
-			{
-				deadlines.map((item) => {
-					return (<li key={item.name}>{item.name} {item.deadline}
-						<button onClick={() => onRemove(item)}>Remove</button>
-						<button onClick={() => onUse(item)}>Use</button>
-					</li>)
-				})
-			}
-		</ul>
-	)
-
-}
-
-
-
-const DeadlineAddForm = ({ onAdd }: { onAdd: DeadlineAddFunction }) => {
-	const [deadlineItem, setDeadLineItem] = useState<Deadline>({
-		name: "",
-		deadline: "10:00"
-	})
-
-	const handleTimePickerChange = (value: TimePickerValue) => {
-		if (value instanceof Date) {
-			throw new Error("It should be string");
-		}
-
-		setDeadLineItem({
-			...deadlineItem, deadline: value
-		})
-	};
-
-	const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setDeadLineItem({ ...deadlineItem, name: event.target.value })
-	}
-
-	return (
-		<div>
-			<label htmlFor="deadlineName" >Name:</label>
-			<input type='text' name="deadlineName" value={deadlineItem.name} onChange={handleNameChange} />
-			<TimePicker onChange={handleTimePickerChange} value={deadlineItem.deadline} />
-			<button onClick={() => onAdd(deadlineItem)}>Add</button>
-		</div>
-	)
+    )
 
 }
 
