@@ -6,13 +6,15 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Deadline } from './Deadline';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 type DeadlineAddFunction = (item: Deadline) => void;
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//     return <Slide direction="up" ref={ref} {...props} />;
-//   });
+const Transition = React.forwardRef(function Transition(props:{
+    children?: React.ReactElement<any, any> 
+}, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 
-const Transition = function Transition(props: any) {
-    return <Slide direction="up" {...props} />;
-};
+// const Transition =  React.forwardRef(function Transition(props: any, ref) {
+//     return <Slide direction="up" ref={ref} {...props} />;
+// });
 
 
 const DeadlineAddForm = ({ open, onClose, onAdd }: { open: boolean, onClose: () => void, onAdd: DeadlineAddFunction }) => {
@@ -42,6 +44,7 @@ const DeadlineAddForm = ({ open, onClose, onAdd }: { open: boolean, onClose: () 
             TransitionComponent={Transition}
             keepMounted
             onClose={onClose}
+            data-testid="addDialog"
         >
             <DialogTitle>
                 Add Deadline
@@ -66,7 +69,7 @@ const DeadlineAddForm = ({ open, onClose, onAdd }: { open: boolean, onClose: () 
                 </div>
 
                 <DialogActions>
-                    <Button onClick={handleAdd} color="primary">
+                    <Button onClick={handleAdd} color="primary" >
                         Add
                     </Button>
                 </DialogActions>
