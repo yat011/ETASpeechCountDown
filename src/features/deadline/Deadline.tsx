@@ -1,10 +1,10 @@
-import { Fab, Grid, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Grid, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, makeStyles, Paper, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startPlayAudio } from '../../util';
-import { selectCurrentDeadline, selectDeadlineList, updateCurrentDeadline, updateDeadlineList } from './deadlineSlice';
+import { selectDeadlineList, updateCurrentDeadline, updateDeadlineList } from './deadlineSlice';
 import AddIcon from '@material-ui/icons/Add';
 import DeadlineAddForm from './DeadlineAddForm';
 export interface Deadline {
