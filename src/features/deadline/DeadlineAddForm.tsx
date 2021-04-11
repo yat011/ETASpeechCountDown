@@ -1,21 +1,15 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Slide, TextField, Typography } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, TextField } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardTimePicker } from '@material-ui/pickers';
 import React, { useState } from 'react';
-import TimePicker, { TimePickerValue } from 'react-time-picker';
 import DateFnsUtils from '@date-io/date-fns';
 import { Deadline } from './Deadline';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 type DeadlineAddFunction = (item: Deadline) => void;
-const Transition = React.forwardRef(function Transition(props:{
-    children?: React.ReactElement<any, any> 
+const Transition = React.forwardRef(function Transition(props: {
+    children?: React.ReactElement<any, any>
 }, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
-  });
-
-// const Transition =  React.forwardRef(function Transition(props: any, ref) {
-//     return <Slide direction="up" ref={ref} {...props} />;
-// });
-
+});
 
 const DeadlineAddForm = ({ open, onClose, onAdd }: { open: boolean, onClose: () => void, onAdd: DeadlineAddFunction }) => {
     const [deadlineItem, setDeadLineItem] = useState<Deadline>({
@@ -23,17 +17,17 @@ const DeadlineAddForm = ({ open, onClose, onAdd }: { open: boolean, onClose: () 
         deadline: "10:00"
     })
 
-    const handleDateChange = (date:MaterialUiPickersDate ) => {
-        if (date === null){
+    const handleDateChange = (date: MaterialUiPickersDate) => {
+        if (date === null) {
             return;
         }
-        setDeadLineItem({...deadlineItem, deadline: convertDatetoTime(date)});
+        setDeadLineItem({ ...deadlineItem, deadline: convertDatetoTime(date) });
     };
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDeadLineItem({ ...deadlineItem, name: event.target.value })
     }
-    
-    const handleAdd = ()=>{
+
+    const handleAdd = () => {
         onAdd(deadlineItem);
         onClose();
     }
@@ -79,16 +73,16 @@ const DeadlineAddForm = ({ open, onClose, onAdd }: { open: boolean, onClose: () 
 
 }
 
-function convertTimetoDate(datetime:string):Date{
+function convertTimetoDate(datetime: string): Date {
     const temp = new Date();
-    const [hours, minutes ] = datetime.split(":")
+    const [hours, minutes] = datetime.split(":")
     temp.setHours(parseInt(hours));
     temp.setMinutes(parseInt(minutes));
     return temp;
 }
 
-function convertDatetoTime(date:Date){
-    return date.getHours()+":"+date.getMinutes()
+function convertDatetoTime(date: Date) {
+    return date.getHours() + ":" + date.getMinutes()
 }
 
 

@@ -26,7 +26,7 @@ const noSleep = new NoSleep();
 
 audioList.addPushListener(()=>{
 	console.log("end?", audioPlayer.ended, audioPlayer.src)
-	if (audioPlayer.src == "" || audioPlayer.ended || audioPlayer.error !== null){
+	if (audioPlayer.src === "" || audioPlayer.ended || audioPlayer.error !== null){
 		popAudioAndPlay();
 	}
 })
@@ -40,7 +40,7 @@ function useLocalStorageState(itemName: string, defaultValue: any): [any, Dispat
 
 	useEffect(() => {
 		setLocalStorage(itemName, value);
-	}, [value]);
+	}, [value, itemName]);
 	return [value, setState];
 }
 

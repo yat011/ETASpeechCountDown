@@ -6,7 +6,7 @@ import { selectETAList } from '../transportation/transportationSlice';
 import { selectCurrentDeadline } from '../deadline/deadlineSlice';
 import { Deadline } from '../deadline/Deadline';
 import { speak } from '../../util';
-import { makeStyles, Paper, Typography } from '@material-ui/core';
+import { makeStyles, Paper } from '@material-ui/core';
 
 
 const REMAINING_TEXT = "仲翻REMAINING分鐘";
@@ -26,7 +26,9 @@ function CountDown() {
 	const lastValidETA = getLastETA(etaBeforeDeadline);
 
 	const [currentDate, setCurrentDate] = useState<Date>(new Date());
-	useEffect(updateDate(setCurrentDate), []);
+	useEffect(()=>{
+		updateDate(setCurrentDate)
+	}, []);
 	const remainingMinutes = getRemainingMiutes(lastValidETA, currentDate);
 
 	useEffect(() => {
