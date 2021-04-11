@@ -60,7 +60,7 @@ const DeadlineView = () => {
                     <DeadlineList deadlines={deadlines} onRemove={hadleDeadlineRemove} onUse={handleDeadlineChosen} />
                 </Grid>
                 <Grid item xs={12} className={styles.addDiv}>
-                    <IconButton color="primary" aria-label="add" onClick={() => { setFormOpen(true) }}>
+                    <IconButton color="primary" data-testid="openAddForm" onClick={() => { setFormOpen(true) }}>
                         <AddIcon />
                     </IconButton>
                 </Grid>
