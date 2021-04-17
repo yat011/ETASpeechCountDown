@@ -10,7 +10,7 @@ const fs = require('fs');
 const util = require('util');
 
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../build')));
 app.use(bodyParser.json());
 
 // Creates a client
@@ -31,8 +31,8 @@ async function generateSpeech(text, filepath) {
   // Write the binary audio content to a local file
   const writeFile = util.promisify(fs.writeFile);
   await writeFile(filepath, response.audioContent, 'binary');
-  // console.log('Audio content written to file: output.mp3');
 }
+
 
 app.get('/ping', function (req, res) {
   return res.send({ "msg": "OKAY" });
