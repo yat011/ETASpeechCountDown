@@ -8,4 +8,4 @@ COPY ./  /app/
 
 RUN CI=True npm install
 
-RUN CI=True npm build
+RUN CI=True npm run build
