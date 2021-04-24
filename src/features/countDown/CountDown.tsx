@@ -26,9 +26,10 @@ function CountDown() {
 	const lastValidETA = getLastETA(etaBeforeDeadline);
 
 	const [currentDate, setCurrentDate] = useState<Date>(new Date());
-	useEffect(()=>{
-		updateDate(setCurrentDate)
+	useEffect(() => {
+		return updateDate(setCurrentDate)
 	}, []);
+
 	const remainingMinutes = getRemainingMiutes(lastValidETA, currentDate);
 
 	useEffect(() => {
@@ -93,14 +94,11 @@ function getRemainingMiutes(lastValidETA: ETADateInformation | null, currentDate
 }
 
 function updateDate(setCurrentDate: React.Dispatch<React.SetStateAction<Date>>) {
-	return () => {
-		let id = setInterval(function () {
-			setCurrentDate(new Date());
-		}, 60000);
+	let id = setInterval(function () {
+		setCurrentDate(new Date());
+	}, 60000);
 
-		return () => clearInterval(id)
-	}
-
+	return () => clearInterval(id)
 }
 
 function getDateObjectFromDatetime(datetimeStr: string) {

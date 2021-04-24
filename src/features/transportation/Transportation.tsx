@@ -22,7 +22,7 @@ function Transportation({ providerNames }: { providerNames: string }): JSX.Eleme
     const etaList = useSelector(selectETAList);
 
 
-    const pairs = useMemo(()=> createProviderInputPairs(providers, default_inputs), [providers]);
+    const pairs = useMemo(() => createProviderInputPairs(providers, default_inputs), [providers]);
 
 
     useEffect(() => {
@@ -59,8 +59,8 @@ function Transportation({ providerNames }: { providerNames: string }): JSX.Eleme
                 {
                     finalETAList.map((row, i): JSX.Element => {
                         return (
-                            <div>
-                                <ListItem key={row.name + ":"+ i} >
+                            <div key={row.name + "div:" + i}>
+                                <ListItem key={row.name + ":" + i} >
                                     <ListItemText primary={row.eta.toLocaleString()} secondary={row.name} />
                                 </ListItem>
                                 <Divider />
