@@ -3,15 +3,15 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 
 class ArrayWithPushEvent<T> extends Array<T>{
-	pushListeners:any[] = [];
-	addPushListener = (listener:any)=>{
+	pushListeners: any[] = [];
+	addPushListener = (listener: any) => {
 		this.pushListeners.push(listener);
-	}	
+	}
 
-	push = (...items:any[]) : number => {
+	push = (...items: any[]): number => {
 		console.log("push", items);
 		const returnValue = super.push(...items);
-		for (let listener of this.pushListeners){
+		for (let listener of this.pushListeners) {
 			listener();
 		}
 		return returnValue;
@@ -24,13 +24,13 @@ const audioPlayer = new Audio();
 
 const noSleep = new NoSleep();
 
-audioList.addPushListener(()=>{
+audioList.addPushListener(() => {
 	console.log("end?", audioPlayer.ended, audioPlayer.src)
-	if (audioPlayer.src === "" || audioPlayer.ended || audioPlayer.error !== null){
+	if (audioPlayer.src === "" || audioPlayer.ended || audioPlayer.error !== null) {
 		popAudioAndPlay();
 	}
 })
-audioPlayer.addEventListener("ended", ()=>{
+audioPlayer.addEventListener("ended", () => {
 	popAudioAndPlay();
 });
 
@@ -44,16 +44,16 @@ function useLocalStorageState(itemName: string, defaultValue: any): [any, Dispat
 	return [value, setState];
 }
 
-function getLocalStorage(itemName:string): any{
+function getLocalStorage(itemName: string): any {
 	let temp = localStorage.getItem(itemName);
 	if (temp !== null) {
 		temp = JSON.parse(temp);
-	}	
+	}
 	return temp;
 }
 
-function setLocalStorage(itemName:string, value: any): void{
-	localStorage.setItem(itemName, JSON.stringify(value));	
+function setLocalStorage(itemName: string, value: any): void {
+	localStorage.setItem(itemName, JSON.stringify(value));
 }
 
 async function speak(text: string) {
@@ -78,30 +78,15 @@ async function speak(text: string) {
 					throw new Error("No response body");
 				}
 
-				var reader = res.body.getReader();
-				// read() returns a promise that resolves
-				// when a value has been received
-				return reader
-					.read()
-					.then((result) => {
-						return result;
-					});
+				return res.blob();
+
 			})
 	}
 
-	const response = await fetchAudio(text);
-	if (!response.value) {
-		return;
-	}
-	const blob = new Blob([response.value], { type: 'audio/mp3' });
+	const blob = await fetchAudio(text);
 	const url = window.URL.createObjectURL(blob);
 	audioList.push(url);
-	// audioPlayer.src = url;
-	// try {
-	// 	audioPlayer.play();
-	// } catch (err) {
-	// 	console.log(err);
-	// }
+
 }
 
 
@@ -110,23 +95,24 @@ async function startPlayAudio() {
 	//https://stackoverflow.com/questions/31776548/why-cant-javascript-play-audio-files-on-iphone-safari
 	//getting the permission
 	// return
-	try{
-		noSleep.enable();
+	try {
+		// noSleep.enable();
 		audioPlayer.src = "";
 		await audioPlayer.play();
-	}catch(err)	{
+	} catch (err) {
 		// console.log(err);
 		console.log(audioPlayer.error)
-	}finally{
+	} finally {
+		console.log("Pause Audio")
 		audioPlayer.pause();
 	}
 
 }
 
-function popAudioAndPlay(){
-	if (audioList.length > 0){
+function popAudioAndPlay() {
+	if (audioList.length > 0) {
 		const nextUrl = audioList.pop();
-		if (!nextUrl){
+		if (!nextUrl) {
 			return;
 		}
 		audioPlayer.src = nextUrl;

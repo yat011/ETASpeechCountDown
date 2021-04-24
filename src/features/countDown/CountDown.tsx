@@ -35,6 +35,7 @@ function CountDown() {
 	useEffect(() => {
 		speakRemainingTime(remainingMinutes);
 	}, [remainingMinutes]);
+
 	useEffect(() => {
 		speakLastETA(lastValidETA);
 	}, [lastValidETA]);
